@@ -660,7 +660,6 @@ class UserHandler implements UserHandlerInterface
             );
         }
 
-        $role->groupIds[] = $contentId;
         $this->backend->update( 'User\\Role', $roleId, (array)$role );
     }
 
@@ -698,7 +697,6 @@ class UserHandler implements UserHandlerInterface
 
         $this->backend->deleteByMatch( 'User\\RoleAssignment', array( 'roleId' => $roleId, 'contentId' => $contentId ) );
 
-        $role->groupIds = array_values( array_diff( $role->groupIds, array( $contentId ) ) );
         $this->backend->update( 'User\\Role', $roleId, (array)$role );
     }
 }
