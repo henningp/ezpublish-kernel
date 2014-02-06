@@ -555,7 +555,7 @@ class UserHandler implements UserHandlerInterface
         // fetch possible roles assigned to this object
         $list = $this->backend->find(
             'User\\Role',
-            array( 'groupIds' => $content->versionInfo->contentInfo->id ),
+            array(),
             array(),
             array(
                 'policies' => array(
@@ -564,6 +564,23 @@ class UserHandler implements UserHandlerInterface
                 )
             )
         );
+
+        // Filter out Roles not assigned to the $content
+        $roleAssignments = $this->backend->find( 'User\\RoleAssignment' );
+        foreach ( $list as $key => $role )
+        {
+            foreach ( $roleAssignments as $roleAssignment )
+            {
+                if ( $role->id == $roleAssignment->roleId
+                    && $roleAssignment->contentId == $content->versionInfo->contentInfo->id
+                )
+                {
+                    continue 2;
+                }
+            }
+
+            unset( $list[$key] );
+        }
 
         // merge policies
         foreach ( $list as $role )
