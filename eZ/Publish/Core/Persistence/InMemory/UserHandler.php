@@ -251,7 +251,12 @@ class UserHandler implements UserHandlerInterface
      */
     public function loadRoleAssignmentsByRoleId( $roleId )
     {
-        throw new \eZ\Publish\API\Repository\Exceptions\NotImplementedException( __METHOD__ );
+        $roleAssignments = $this->backend->find(
+            'User\\RoleAssignment',
+            array( 'roleId' => $roleId )
+        );
+
+        return $roleAssignments;
     }
 
     /**

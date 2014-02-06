@@ -496,6 +496,50 @@ class UserHandlerTest extends HandlerTest
     }
 
     /**
+     * Test loadRoleAssignmentsByRoleId function
+     *
+     * @covers eZ\Publish\Core\Persistence\InMemory\UserHandler::loadRoleAssignmentsByRoleId
+     */
+    public function testLoadRoleAssignmentsByRoleId()
+    {
+        $handler = $this->persistenceHandler->userHandler();
+
+        $this->assertEquals(
+            array(
+                new RoleAssignment(
+                    array(
+                        'roleId' => 1,
+                        'contentId' => 11,
+                        'limitationIdentifier' => null,
+                        'values' => null
+                    )
+                ),
+                new RoleAssignment(
+                    array(
+                        'roleId' => 1,
+                        'contentId' => 42,
+                        'limitationIdentifier' => null,
+                        'values' => null
+                    )
+                )
+            ),
+            $handler->loadRoleAssignmentsByRoleId( 1 )
+        );
+    }
+
+    /**
+     * Test loadRoleAssignmentsByRoleId function
+     *
+     * @covers eZ\Publish\Core\Persistence\InMemory\UserHandler::loadRoleAssignmentsByRoleId
+     */
+    public function testLoadRoleAssignmentsByRoleIdNotFound()
+    {
+        $handler = $this->persistenceHandler->userHandler();
+        $list = $handler->loadRoleAssignmentsByRoleId( 999 );
+        $this->assertEquals( array(), $list );
+    }
+
+    /**
      * Test update function
      *
      * @covers eZ\Publish\Core\Persistence\InMemory\UserHandler::updateRole
